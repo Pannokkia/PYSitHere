@@ -1,8 +1,8 @@
 {
   "offices": [
     {
-      "id": "HQ-Milano",
-      "name": "Sede Centrale Milano",
+      "id": "HQ-MI",
+      "name": "Sede Centrale MI",
       "floors": [
         {
           "name": "Piano Terra",
@@ -41,8 +41,8 @@
       }
     },
     {
-      "id": "HQ-Roma",
-      "name": "Sede Roma",
+      "id": "HQ-RM",
+      "name": "Sede RM",
       "floors": [
         {
           "name": "Open Space",
