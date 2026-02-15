@@ -114,3 +114,9 @@ pip install customtkinter tkcalendar pillow
 
 ▶️ Run the application
 python main.py
+
+Utenti definiti:
+
+admin --> admin
+rossi --> prova
+verdi -->prova

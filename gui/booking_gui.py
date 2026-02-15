@@ -82,8 +82,8 @@ class BookingWindow:
 
         self.win.configure(fg_color="#222831")
 
-        # Zoom mini‑mappa
-        self.zoom_factor = 1.0
+        # Zoom mini‑mappa di default è 1.5
+        self.zoom_factor = 1.5
 
         # Icone
         try:
