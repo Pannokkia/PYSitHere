@@ -107,3 +107,10 @@ Moduli utilizzati:
 
 ▶️ Avvio dell’applicazione
 python main.py
+
+
+User definded:
+
+admin --> admin
+rossi --> prova
+verdi -->prova

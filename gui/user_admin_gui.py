@@ -44,7 +44,7 @@ class UserAdminWindow:
             self.win,
             text="Gestione Utenti",
             font=("Helvetica", 32, "bold"),
-            text_color="#00E676"
+            text_color="#00ADB5"
         )
         title.pack(pady=20)
 
@@ -72,13 +72,13 @@ class UserAdminWindow:
         role_menu = ctk.CTkOptionMenu(
             top, values=["user", "superuser"], variable=self.role_var,
             width=150, height=45, fg_color="#00ADB5",
-            button_color="#0097A7", text_color="black"
+            button_color="#00ADB5", text_color="black"
         )
         role_menu.pack(side="left", padx=10)
 
         ctk.CTkButton(
             top, text="Aggiungi", image=self.icon_add, compound="left",
-            height=45, fg_color="#00ADB5", hover_color="#0097A7",
+            height=45, fg_color="#00ADB5", hover_color="#00ADB5",
             text_color="black", command=self.add_user
         ).pack(side="left", padx=10)
 
@@ -103,7 +103,7 @@ class UserAdminWindow:
             filter_frame, values=["Tutti", "user", "superuser"],
             variable=self.filter_role_var,
             width=180, height=45, fg_color="#00ADB5",
-            button_color="#0097A7", text_color="black",
+            button_color="#00ADB5", text_color="black",
             command=lambda _: self.refresh()
         )
         filter_menu.pack(side="left", padx=10)
@@ -126,7 +126,7 @@ class UserAdminWindow:
         self.prev_btn = ctk.CTkButton(
             pagination, text="« Precedente",
             width=150, height=40,
-            fg_color="#00ADB5", hover_color="#0097A7",
+            fg_color="#00ADB5", hover_color="#00ADB5",
             text_color="black",
             command=self.prev_page
         )
@@ -141,7 +141,7 @@ class UserAdminWindow:
         self.next_btn = ctk.CTkButton(
             pagination, text="Successivo »",
             width=150, height=40,
-            fg_color="#00ADB5", hover_color="#0097A7",
+            fg_color="#00ADB5", hover_color="#00ADB5",
             text_color="black",
             command=self.next_page
         )
@@ -162,13 +162,13 @@ class UserAdminWindow:
 
         ctk.CTkButton(
             pw_frame, text="Cambia password",
-            height=45, fg_color="#00ADB5", hover_color="#0097A7",
+            height=45, fg_color="#00ADB5", hover_color="#00ADB5",
             text_color="black", command=self.change_password
         ).pack(side="left", padx=10)
 
         ctk.CTkButton(
             pw_frame, text="Reset password",
-            height=45, fg_color="#00E676", hover_color="#00C96B",
+            height=45, fg_color="#00ADB5", hover_color="#00ADB5",
             text_color="black", command=self.reset_password
         ).pack(side="left", padx=10)
 

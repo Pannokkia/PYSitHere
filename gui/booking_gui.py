@@ -97,7 +97,7 @@ class BookingWindow:
             self.win,
             text=f"Prenotazione Scrivanie\n{office_name} — {floor_name}",
             font=("Helvetica", 32, "bold"),
-            text_color="#00E676"
+            text_color="#00ADB5"
         )
         title.pack(pady=20)
 
@@ -123,7 +123,7 @@ class BookingWindow:
             width=150,
             height=45,
             fg_color="#00ADB5",
-            button_color="#0097A7",
+            button_color="#00ADB5",
             text_color="black",
             command=lambda _: self.load()
         )
@@ -154,7 +154,7 @@ class BookingWindow:
         left_frame.pack(side="left", fill="both", expand=True, padx=10, pady=10)
 
         ctk.CTkLabel(
-            left_frame, text="Scrivanie", font=("Helvetica", 22, "bold"), text_color="#00E676"
+            left_frame, text="Scrivanie", font=("Helvetica", 22, "bold"), text_color="#00ADB5"
         ).pack(pady=10)
 
         self.listbox = tk.Listbox(
@@ -201,7 +201,7 @@ class BookingWindow:
             center_frame,
             text="Mappa piano",
             font=("Helvetica", 22, "bold"),
-            text_color="#00E676"
+            text_color="#00ADB5"
         ).pack(pady=10)
 
         self.canvas = tk.Canvas(center_frame, bg="#222831")
@@ -240,7 +240,7 @@ class BookingWindow:
             right_frame,
             text="Le mie prenotazioni",
             font=("Helvetica", 22, "bold"),
-            text_color="#00E676"
+            text_color="#00ADB5"
         ).pack(pady=10)
 
         self.my_bookings = tk.Listbox(

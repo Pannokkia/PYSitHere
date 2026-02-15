@@ -33,7 +33,7 @@ class DeskAdminWindow:
             self.win,
             text=f"Gestione scrivanie\n{office_name} — {floor_name}",
             font=("Helvetica", 30, "bold"),
-            text_color="#00E676"
+            text_color="#00ADB5"
         )
         title.pack(pady=20)
 
@@ -97,8 +97,8 @@ class DeskAdminWindow:
             right,
             text="Salva modifiche",
             height=40,
-            fg_color="#00E676",
-            hover_color="#00C96B",
+            fg_color="#00ADB5",
+            hover_color="#00ADB5",
             text_color="black",
             command=self.save
         ).pack(pady=20)
