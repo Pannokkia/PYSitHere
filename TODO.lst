@@ -1,0 +1,15 @@
+Italiano:
+Interfaccia che supporta diverse lingue
+Reportistica prenotazione desk per utente su base settimanale/mensile/annuale
+Definizione nuovo ruole 'Segretarie' con permessi di visualizzazione reportistica
+Definizione menu Tools per configurazione parametri applicaziine (SMTP SERVER...) visibile solo a profilo ADMIN
+Invio tranite email di username/password in fase di creazione nuova utenza/reset password
+Sistemare grafica finestra 'configurazione uffici' da parte dell'Admin
+
+English:
+Interface that supports several languages
+Desk booking reporting per user on a weekly/monthly/annual basis
+Definition of new 'Secretary' roles with reporting visualization 
+Definition of the Tools menu for configuration of application parameters (SMTP SERVER...) visible only to ADMIN
+Sending your username/password email during the creation of a new user/password reset
+Fix graphic window 'office configuration' by the Admin
