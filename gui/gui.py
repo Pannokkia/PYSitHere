@@ -140,15 +140,15 @@ class MainWindow:
         menubar = tk.Menu(self.root)
 
         file_menu = tk.Menu(menubar, tearoff=0)
-        file_menu.add_command(label="Esci", command=self.root.quit)
-        menubar.add_cascade(label="File", menu=file_menu)
+        file_menu.add_command(label=texts["sub_mnu_file_exit"], command=self.root.quit)
+        menubar.add_cascade(label=texts["mnu_file"], menu=file_menu)
 
         if self.role == "superuser":
             admin_menu = tk.Menu(menubar, tearoff=0)
-            admin_menu.add_command(label="Gestione utenti", command=self.open_user_admin)
-            admin_menu.add_command(label="Gestione scrivanie", command=self.open_desk_admin)
-            admin_menu.add_command(label="Gestione uffici", command=self.open_office_admin)
-            menubar.add_cascade(label="Admin", menu=admin_menu)
+            admin_menu.add_command(label=texts["sub_mnu_admin_manage_users"], command=self.open_user_admin)
+            admin_menu.add_command(label=texts["sub_mnu_admin_manage_desk"], command=self.open_desk_admin)
+            admin_menu.add_command(label=texts["sub_mnu_admin_manage_office"], command=self.open_office_admin)
+            menubar.add_cascade(label=texts["mnu_admin_tools"], menu=admin_menu)
 
         self.root.config(menu=menubar)
 
