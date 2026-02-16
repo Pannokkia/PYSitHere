@@ -20,7 +20,7 @@ class UserAdminWindow:
             self.win,
             text="Gestione Utenti",
             font=("Helvetica", 32, "bold"),
-            text_color="#00E676"
+            text_color="#00ADB5"
         ).pack(pady=20)
 
         self.listbox = tk.Listbox(
@@ -39,7 +39,7 @@ class UserAdminWindow:
             btn_frame,
             text="Aggiungi Utente",
             fg_color="#00ADB5",
-            hover_color="#0097A7",
+            hover_color="#00ADB5",
             text_color="black",
             command=self.add_user
         ).pack(side="left", padx=10)

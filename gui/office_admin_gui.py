@@ -85,7 +85,7 @@ class OfficeAdminWindow:
             left_frame,
             text="Piani",
             font=("Helvetica", 22, "bold"),
-            text_color="#00E676"
+            text_color="#00ADB5"
         ).pack(pady=10)
 
         self.floor_list = tk.Listbox(
@@ -113,7 +113,7 @@ class OfficeAdminWindow:
             right_frame,
             text="Editor Scrivanie",
             font=("Helvetica", 22, "bold"),
-            text_color="#00E676"
+            text_color="#00ADB5"
         ).pack(pady=10)
 
         self.canvas = tk.Canvas(right_frame, bg="#222831")

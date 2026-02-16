@@ -2,6 +2,7 @@ import customtkinter as ctk
 import tkinter as tk
 from tkinter import messagebox
 
+from database.database import init_db
 from logic.logic import get_user_by_username
 from gui.booking_gui import BookingWindow
 from gui.office_admin_gui import OfficeAdminWindow
@@ -12,6 +13,8 @@ from config.config_loader import get_offices
 
 class LoginWindow:
     def __init__(self):
+        init_db()  # INIZIALIZZA DB QUI
+
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("blue")
 
@@ -25,7 +28,7 @@ class LoginWindow:
             self.win,
             text="PYSitHere",
             font=("Helvetica", 32, "bold"),
-            text_color="#0097A7"
+            text_color="#00ADB5"
         )
         title.pack(pady=30)
 
@@ -45,12 +48,9 @@ class LoginWindow:
             command=self.login
         ).pack(pady=20)
 
-        # Bind Enter/Return
         self.win.bind("<Return>", self.login_event)
-    
-
         self.win.mainloop()
-        
+
     # ---------------------------------------------------------
     # LOGIN
     # ---------------------------------------------------------
@@ -75,9 +75,7 @@ class LoginWindow:
 
         self.open_home(user_id, role)
 
-
     def login_event(self, event):
-        """Wrapper to call login() from key binding."""
         self.login()
 
     # ---------------------------------------------------------
@@ -86,9 +84,6 @@ class LoginWindow:
     def open_home(self, user_id, role):
         self.win.withdraw()
 
-        # ---------------------------------------------------------
-        # CREA LA FINESTRA HOME
-        # ---------------------------------------------------------
         home = ctk.CTkToplevel()
         home.title("PYSitHere — Home")
         home.geometry("600x500")
@@ -122,7 +117,7 @@ class LoginWindow:
         home.configure(menu=menubar)
 
         # ---------------------------------------------------------
-        # CONTENUTO DELLA HOME
+        # CONTENUTO HOME
         # ---------------------------------------------------------
         ctk.CTkLabel(
             home,
@@ -161,7 +156,7 @@ class LoginWindow:
             variable=office_var,
             width=300,
             fg_color="#00ADB5",
-            button_color="#0097A7",
+            button_color="#00ADB5",
             text_color="black"
         )
         office_menu.pack(pady=10)
@@ -191,7 +186,7 @@ class LoginWindow:
             variable=floor_var,
             width=300,
             fg_color="#00ADB5",
-            button_color="#0097A7",
+            button_color="#00ADB5",
             text_color="black"
         )
         floor_menu.pack(pady=10)
@@ -206,7 +201,7 @@ class LoginWindow:
             home,
             text="Apri Prenotazioni",
             fg_color="#00ADB5",
-            hover_color="#0097A7",
+            hover_color="#00ADB5",
             text_color="black",
             width=250,
             command=lambda: BookingWindow(

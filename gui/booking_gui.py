@@ -141,7 +141,7 @@ class BookingWindow:
             compound="left",
             height=45,
             fg_color="#00ADB5",
-            hover_color="#0097A7",
+            hover_color="#00ADB5",
             text_color="black",
             command=self.load
         ).pack(side="left", padx=20)
@@ -178,7 +178,7 @@ class BookingWindow:
             width=180,
             height=45,
             fg_color="#00ADB5",
-            hover_color="#0097A7",
+            hover_color="#00ADB5",
             text_color="black",
             command=self.book
         ).pack(pady=5)
@@ -283,8 +283,10 @@ class BookingWindow:
 
         booked_names = set()
         for d in dates:
-            for _, name in get_booked_desks(d):
-                booked_names.add(name)
+            booked_names = set()
+            for d in dates:
+                for desk_name, _ in get_booked_desks(d):
+                    booked_names.add(desk_name)
 
         self.listbox.delete(0, tk.END)
 
@@ -478,7 +480,11 @@ class BookingWindow:
         row = self.my_bookings.get(sel[0])
         booking_id = int(row.split("(ID: ")[1].replace(")", ""))
 
-        cancel_booking(booking_id, is_superuser=(self.role == "admin"))
+        cancel_booking(
+            booking_id,
+            is_superuser=(self.role == "admin"),
+            user_id=self.user_id
+        )
 
         self.load()
         self.load_my_bookings()
