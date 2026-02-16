@@ -1,7 +1,10 @@
 import customtkinter as ctk
 from database.database import init_db
 from gui.gui import MainWindow
+from config.languages import LANG
 
+current_lang = "it"
+texts = LANG[current_lang]
 
 # ---------------------------------------------------------
 # TEMA GRAFICO GLOBALE
@@ -34,7 +37,7 @@ def main():
 
     # Crea finestra principale
     root = ctk.CTk()
-    root.title("Desk Booking System")
+    root.title(texts["title_main_win"])
 
     # Avvia GUI principale
     MainWindow(root)

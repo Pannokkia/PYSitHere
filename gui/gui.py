@@ -10,8 +10,14 @@ from gui.office_admin_gui import OfficeAdminWindow
 from logic.user_logic import login
 from config.config_loader import get_offices, get_office_by_name
 from database.database import init_db   
+from config.languages import LANG
+
+current_lang = "it"
+texts = LANG[current_lang]
 
 class MainWindow:
+    
+
     def __init__(self, root):
         self.root = root
 
@@ -19,8 +25,8 @@ class MainWindow:
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("blue")
 
-        self.root.title("Desk Booking System")
-
+        self.root.title((texts["title_main_win"]))
+        
         self.user_id = None
         self.role = None
         self.office_var = None
@@ -33,7 +39,6 @@ class MainWindow:
     # ---------------------------------------------------------
     def build_login(self):
         self.clear()
-
         self.root.geometry("700x640")
         self.root.minsize(700, 640)
 
@@ -46,7 +51,7 @@ class MainWindow:
 
         title = ctk.CTkLabel(
             frame,
-            text="Desk Booking System",
+            text=(texts["label_login_window"]),
             font=("Helvetica", 38, "bold"),
             text_color="#00adb5"
         )
