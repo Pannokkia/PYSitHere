@@ -59,7 +59,7 @@ class MainWindow:
 
         subtitle = ctk.CTkLabel(
             frame,
-            text="Accedi al tuo spazio di lavoro",
+            text=texts["label_subtitle_login_win"],
             font=("Helvetica", 17),
             text_color="#eeeeee"
         )
@@ -68,7 +68,7 @@ class MainWindow:
         # USERNAME
         self.username = ctk.CTkEntry(
             frame,
-            placeholder_text="Username",
+            placeholder_text=texts["label_username"],
             width=360,
             height=55,
             corner_radius=18,
@@ -82,7 +82,7 @@ class MainWindow:
         # PASSWORD
         self.password = ctk.CTkEntry(
             frame,
-            placeholder_text="Password",
+            placeholder_text=texts["label_password"],
             show="*",
             width=360,
             height=55,
@@ -97,7 +97,7 @@ class MainWindow:
         # LOGIN BUTTON
         login_btn = ctk.CTkButton(
             frame,
-            text="Accedi",
+            text=texts["button_login"],
             height=55,
             width=260,
             corner_radius=18,
@@ -109,10 +109,18 @@ class MainWindow:
         )
         login_btn.pack(pady=30)
 
+        #Imposto la pressine dell'invio come default sul bottone di login    
+        login_btn.focus()
+        self.root.bind("<Return>", lambda e: self.do_login())
+
+
     def do_login(self):
         result = login(self.username.get(), self.password.get())
         if not result:
-            messagebox.showerror("Errore", "Credenziali non valide")
+            messagebox.showerror("Errore", texts["msg_invalid_credentials"])
+            return
+        if 'blocked' in result:
+            messagebox.showerror("Errore",  texts["msg_blocked_user"])
             return
 
         self.user_id, self.role = result

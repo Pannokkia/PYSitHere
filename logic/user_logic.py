@@ -23,7 +23,7 @@ def login(username, password):
     user_id, role, is_blocked = row
 
     if is_blocked == 1:
-        return None  # utente bloccato
+        return 'blocked'  # utente bloccato
 
     return user_id, role
 
