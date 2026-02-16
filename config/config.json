@@ -13,7 +13,8 @@
             { "name": "M-PT-Desk A3", "x": 250, "y": 50  },
             { "name": "M-PT-Desk B1", "x": 50,  "y": 150 },
             { "name": "M-PT-Desk B2", "x": 150, "y": 150 },
-            { "name": "M-PT-Desk B3", "x": 250, "y": 150 }
+            { "name": "M-PT-Desk B3", "x": 250, "y": 150 },
+            { "name": "M-PT-Desk PROVA", "x": 250, "y": 150 }
           ]
         },
         {
