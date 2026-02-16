@@ -1,50 +1,214 @@
 import customtkinter as ctk
-from database.database import init_db
-from gui.gui import MainWindow
-from config.languages import LANG
+import tkinter as tk
+from tkinter import messagebox
 
-current_lang = "it"
-texts = LANG[current_lang]
+from logic.logic import get_user_by_username
+from gui.booking_gui import BookingWindow
+from gui.office_admin_gui import OfficeAdminWindow
+from gui.user_admin_gui import UserAdminWindow
 
-# ---------------------------------------------------------
-# TEMA GRAFICO GLOBALE
-# ---------------------------------------------------------
-def setup_theme():
-    # Modalità scura moderna
-    ctk.set_appearance_mode("dark")
-
-    # Tema con colori vivi (puoi usare: "green", "blue", "dark-blue")
-    ctk.set_default_color_theme("green")
-
-    # Palette aziendale (solo come riferimento)
-    # primary:        #00ADB5
-    # primary_hover:  #0097A7
-    # accent:         #00E676
-    # bg_dark:        #222831
-    # bg_field:       #393E46
-    # text_light:     #EEEEEE
+from config.config_loader import get_offices
 
 
-# ---------------------------------------------------------
-# AVVIO APPLICAZIONE
-# ---------------------------------------------------------
-def main():
-    # Inizializza database (crea tabelle, migra colonne, importa scrivanie)
-    init_db()
+class LoginWindow:
+    def __init__(self):
+        ctk.set_appearance_mode("dark")
+        ctk.set_default_color_theme("blue")
 
-    # Applica tema globale
-    setup_theme()
+        self.win = ctk.CTk()
+        self.win.title("PYSitHere — Login")
 
-    # Crea finestra principale
-    root = ctk.CTk()
-    root.title(texts["title_main_win"])
+        self.win.geometry("500x400")
+        self.win.configure(fg_color="#222831")
 
-    # Avvia GUI principale
-    MainWindow(root)
+        title = ctk.CTkLabel(
+            self.win,
+            text="PYSitHere",
+            font=("Helvetica", 32, "bold"),
+            text_color="#00E676"
+        )
+        title.pack(pady=30)
 
-    # Loop principale
-    root.mainloop()
+        self.username = ctk.CTkEntry(self.win, placeholder_text="Username", width=250)
+        self.username.pack(pady=10)
+
+        self.password = ctk.CTkEntry(self.win, placeholder_text="Password", show="*", width=250)
+        self.password.pack(pady=10)
+
+        ctk.CTkButton(
+            self.win,
+            text="Accedi",
+            fg_color="#00ADB5",
+            hover_color="#0097A7",
+            text_color="black",
+            width=200,
+            command=self.login
+        ).pack(pady=20)
+
+        self.win.mainloop()
+
+    # ---------------------------------------------------------
+    # LOGIN
+    # ---------------------------------------------------------
+    def login(self):
+        username = self.username.get().strip()
+        password = self.password.get().strip()
+
+        user = get_user_by_username(username)
+        if not user:
+            messagebox.showerror("Errore", "Utente non trovato")
+            return
+
+        user_id, uname, pwd, role, is_blocked = user
+
+        if is_blocked:
+            messagebox.showerror("Accesso negato", "Il tuo account è bloccato")
+            return
+
+        if pwd != password:
+            messagebox.showerror("Errore", "Password errata")
+            return
+
+        self.open_home(user_id, role)
+
+    # ---------------------------------------------------------
+    # HOME
+    # ---------------------------------------------------------
+    def open_home(self, user_id, role):
+        self.win.withdraw()
+
+        # ---------------------------------------------------------
+        # CREA LA FINESTRA HOME
+        # ---------------------------------------------------------
+        home = ctk.CTkToplevel()
+        home.title("PYSitHere — Home")
+        home.geometry("600x500")
+        home.configure(fg_color="#222831")
+
+        # ---------------------------------------------------------
+        # MENU BAR
+        # ---------------------------------------------------------
+        menubar = tk.Menu(home)
+
+        # --- FILE ---
+        file_menu = tk.Menu(menubar, tearoff=0)
+        file_menu.add_command(label="Esci", command=home.destroy)
+        menubar.add_cascade(label="File", menu=file_menu)
+
+        # --- STRUMENTI ---
+        tools_menu = tk.Menu(menubar, tearoff=0)
+
+        if role and role.lower() in ("admin", "superuser", "administrator", "super"):
+            tools_menu.add_command(
+                label="Gestione Uffici",
+                command=lambda: OfficeAdminWindow(home)
+            )
+            tools_menu.add_command(
+                label="Gestione Utenti",
+                command=lambda: UserAdminWindow(home)
+            )
+
+        menubar.add_cascade(label="Strumenti", menu=tools_menu)
+
+        home.configure(menu=menubar)
+
+        # ---------------------------------------------------------
+        # CONTENUTO DELLA HOME
+        # ---------------------------------------------------------
+        ctk.CTkLabel(
+            home,
+            text="Benvenuto!",
+            font=("Helvetica", 28, "bold"),
+            text_color="#00E676"
+        ).pack(pady=20)
+
+        # ---------------------------------------------------------
+        # SELEZIONE UFFICIO
+        # ---------------------------------------------------------
+        offices = get_offices()
+
+        if not offices:
+            ctk.CTkLabel(
+                home,
+                text="⚠ Nessun ufficio configurato.\nVai in Strumenti → Gestione Uffici",
+                font=("Helvetica", 18),
+                text_color="#FF5252"
+            ).pack(pady=20)
+            return
+
+        ctk.CTkLabel(
+            home,
+            text="Seleziona un ufficio:",
+            font=("Helvetica", 18),
+            text_color="#EEEEEE"
+        ).pack(pady=10)
+
+        office_labels = [f"{o['id']} — {o['name']}" for o in offices]
+        office_var = tk.StringVar(value=office_labels[0])
+
+        office_menu = ctk.CTkOptionMenu(
+            home,
+            values=office_labels,
+            variable=office_var,
+            width=300,
+            fg_color="#00ADB5",
+            button_color="#0097A7",
+            text_color="black"
+        )
+        office_menu.pack(pady=10)
+
+        # ---------------------------------------------------------
+        # SELEZIONE PIANO
+        # ---------------------------------------------------------
+        ctk.CTkLabel(
+            home,
+            text="Seleziona un piano:",
+            font=("Helvetica", 18),
+            text_color="#EEEEEE"
+        ).pack(pady=10)
+
+        floor_var = tk.StringVar(value="")
+
+        def update_floors(choice):
+            office_id = choice.split(" — ")[0]
+            office = next(o for o in offices if o["id"] == office_id)
+            floors = [f["name"] for f in office["floors"]]
+            floor_var.set(floors[0] if floors else "")
+            floor_menu.configure(values=floors)
+
+        floor_menu = ctk.CTkOptionMenu(
+            home,
+            values=[],
+            variable=floor_var,
+            width=300,
+            fg_color="#00ADB5",
+            button_color="#0097A7",
+            text_color="black"
+        )
+        floor_menu.pack(pady=10)
+
+        update_floors(office_labels[0])
+        office_menu.configure(command=update_floors)
+
+        # ---------------------------------------------------------
+        # APRI PRENOTAZIONI
+        # ---------------------------------------------------------
+        ctk.CTkButton(
+            home,
+            text="Apri Prenotazioni",
+            fg_color="#00ADB5",
+            hover_color="#0097A7",
+            text_color="black",
+            width=250,
+            command=lambda: BookingWindow(
+                home,
+                user_id,
+                role,
+                office_var.get().split(" — ")[0],
+                floor_var.get()
+            )
+        ).pack(pady=20)
 
 
 if __name__ == "__main__":
-    main()
+    LoginWindow()

@@ -31,7 +31,7 @@ class MainWindow:
         self.role = None
         self.office_var = None
         self.floor_var = None
-
+        
         self.build_login()
 
     # ---------------------------------------------------------

@@ -8,12 +8,17 @@ from datetime import timedelta
 from logic.logic import (
     get_free_desks,
     get_booked_desks,
+    get_booked_desks_with_user,
     book_desk,
     cancel_booking,
     get_user_bookings,
 )
 
-from config.config_loader import get_office_by_name, get_floor
+from config.config_loader import (
+    get_office_by_name,
+    get_floor,
+    reload_config
+)
 
 
 # ---------------------------------------------------------
@@ -60,30 +65,30 @@ class Tooltip:
 # BOOKING WINDOW
 # ---------------------------------------------------------
 class BookingWindow:
-    def __init__(self, master, user_id, role, office_name, floor_name):
+    def __init__(self, master, user_id, role, office_id, floor_name):
         self.user_id = user_id
         self.role = role
-        self.office_name = office_name
+        self.office_id = office_id
         self.floor_name = floor_name
 
         self.win = ctk.CTkToplevel(master)
-        self.win.title(f"Prenotazioni — {office_name} / {floor_name}")
+        self.win.title(f"Prenotazioni — {office_id} / {floor_name}")
 
         try:
             self.win.state("zoomed")
         except:
             self.win.attributes("-zoomed", True)
 
+        self.win.configure(fg_color="#222831")
         self.win.lift()
         self.win.focus_force()
         self.win.grab_set()
-        self.win.attributes("-topmost", True)
-        self.win.after(200, lambda: self.win.attributes("-topmost", False))
 
-        self.win.configure(fg_color="#222831")
+        # 🔄 Refresh automatico
+        self.win.bind("<FocusIn>", lambda e: self.refresh_config())
 
-        # Zoom mini‑mappa di default è 1.5
-        self.zoom_factor = 1.5
+        # Zoom mini‑mappa
+        self.zoom_factor = 1.0
 
         # Icone
         try:
@@ -95,9 +100,9 @@ class BookingWindow:
 
         title = ctk.CTkLabel(
             self.win,
-            text=f"Prenotazione Scrivanie\n{office_name} — {floor_name}",
+            text=f"Prenotazione Scrivanie\n{office_id} — {floor_name}",
             font=("Helvetica", 32, "bold"),
-            text_color="#00ADB5"
+            text_color="#00E676"
         )
         title.pack(pady=20)
 
@@ -123,7 +128,7 @@ class BookingWindow:
             width=150,
             height=45,
             fg_color="#00ADB5",
-            button_color="#00ADB5",
+            button_color="#0097A7",
             text_color="black",
             command=lambda _: self.load()
         )
@@ -154,7 +159,7 @@ class BookingWindow:
         left_frame.pack(side="left", fill="both", expand=True, padx=10, pady=10)
 
         ctk.CTkLabel(
-            left_frame, text="Scrivanie", font=("Helvetica", 22, "bold"), text_color="#00ADB5"
+            left_frame, text="Scrivanie", font=("Helvetica", 22, "bold"), text_color="#00E676"
         ).pack(pady=10)
 
         self.listbox = tk.Listbox(
@@ -201,34 +206,14 @@ class BookingWindow:
             center_frame,
             text="Mappa piano",
             font=("Helvetica", 22, "bold"),
-            text_color="#00ADB5"
+            text_color="#00E676"
         ).pack(pady=10)
 
         self.canvas = tk.Canvas(center_frame, bg="#222831")
         self.canvas.pack(fill="both", expand=True, padx=10, pady=10)
 
-        # Zoom con rotellina
         self.canvas.bind("<MouseWheel>", self.on_zoom)
-
-        # Click per selezionare scrivania
         self.canvas.bind("<Button-1>", self.on_canvas_click)
-
-        legend = ctk.CTkFrame(center_frame, fg_color="#222831")
-        legend.pack(pady=10)
-
-        ctk.CTkLabel(
-            legend, text="Legenda:", font=("Helvetica", 14, "bold"), text_color="#EEEEEE"
-        ).pack(side="left", padx=10)
-
-        free_box = tk.Canvas(legend, width=20, height=20, bg="#222831", highlightthickness=0)
-        free_box.create_oval(2, 2, 18, 18, fill="#00E676", outline="#00C96B", width=2)
-        free_box.pack(side="left")
-        ctk.CTkLabel(legend, text="Libera", text_color="#EEEEEE").pack(side="left", padx=10)
-
-        occ_box = tk.Canvas(legend, width=20, height=20, bg="#222831", highlightthickness=0)
-        occ_box.create_oval(2, 2, 18, 18, fill="#FF5252", outline="#D32F2F", width=2)
-        occ_box.pack(side="left")
-        ctk.CTkLabel(legend, text="Occupata", text_color="#EEEEEE").pack(side="left", padx=10)
 
         # ---------------------------------------------------------
         # DESTRA — MIE PRENOTAZIONI
@@ -240,7 +225,7 @@ class BookingWindow:
             right_frame,
             text="Le mie prenotazioni",
             font=("Helvetica", 22, "bold"),
-            text_color="#00ADB5"
+            text_color="#00E676"
         ).pack(pady=10)
 
         self.my_bookings = tk.Listbox(
@@ -251,18 +236,21 @@ class BookingWindow:
         # ---------------------------------------------------------
         # CONFIG PIANO
         # ---------------------------------------------------------
-        self.office = get_office_by_name(self.office_name)
-        self.floor = get_floor(self.office, self.floor_name)
-        self.desks_cfg = self.floor["desks"]
-
-        self.desk_positions = {}  # name -> (cx, cy)
-
-        self.win.after(200, lambda: self.draw_minimap(set()))
+        self.refresh_config()
         self.load_my_bookings()
         self.load()
 
     # ---------------------------------------------------------
-    # CALCOLO RANGE DATE PER FILTRO
+    # REFRESH CONFIG
+    # ---------------------------------------------------------
+    def refresh_config(self):
+        reload_config()
+        self.office = get_office_by_name(self.office_id)
+        self.floor = get_floor(self.office, self.floor_name)
+        self.desks_cfg = self.floor["desks"]
+
+    # ---------------------------------------------------------
+    # CALCOLO RANGE DATE
     # ---------------------------------------------------------
     def _get_dates_for_filter(self):
         selected_date = self.date.get_date()
@@ -288,15 +276,15 @@ class BookingWindow:
     # ---------------------------------------------------------
     def load(self):
         dates = self._get_dates_for_filter()
+        selected_date_str = self.date.get_date().strftime("%Y-%m-%d")
 
-        # scrivanie occupate in QUALSIASI giorno del range
+        booked_with_user = get_booked_desks_with_user(selected_date_str)
+        booked_map = {desk: user for desk, user in booked_with_user}
+
         booked_names = set()
         for d in dates:
             for _, name in get_booked_desks(d):
                 booked_names.add(name)
-
-        # lista scrivanie riferita al giorno selezionato
-        selected_date_str = self.date.get_date().strftime("%Y-%m-%d")
 
         self.listbox.delete(0, tk.END)
 
@@ -312,14 +300,14 @@ class BookingWindow:
             if d["name"] in booked_names:
                 self.listbox.insert(tk.END, f"BOOKED | {d['name']} | {selected_date_str}")
 
-        self.win.after(50, lambda: self.draw_minimap(booked_names))
+        self.win.after(50, lambda: self.draw_minimap(booked_names, booked_map))
 
     # ---------------------------------------------------------
     # MINI‑MAPPA
     # ---------------------------------------------------------
-    def draw_minimap(self, booked_names):
+    def draw_minimap(self, booked_names, booked_map):
         self.canvas.delete("all")
-        self.desk_positions.clear()
+        self.desk_positions = {}
 
         if not self.desks_cfg:
             return
@@ -352,11 +340,9 @@ class BookingWindow:
             if name in booked_names:
                 fill = "#FF5252"
                 outline = "#D32F2F"
-                status = "Occupata"
             else:
                 fill = "#00E676"
                 outline = "#00C96B"
-                status = "Libera"
 
             self.canvas.create_oval(
                 cx - r, cy - r, cx + r, cy + r,
@@ -370,32 +356,42 @@ class BookingWindow:
                 font=("Helvetica", max(7, int(9 * self.zoom_factor)), "bold")
             )
 
+            if name in booked_map:
+                self.canvas.create_text(
+                    cx, cy + 18 * self.zoom_factor,
+                    text=booked_map[name],
+                    fill="#FF5252",
+                    font=("Helvetica", max(7, int(8 * self.zoom_factor)), "bold")
+                )
+
             frame = tk.Frame(self.canvas, width=20, height=20)
             self.canvas.create_window(cx, cy, window=frame)
-            Tooltip(
-                frame,
-                f"{name}\nStato: {status}\nGiorno: {self.date.get_date().strftime('%Y-%m-%d')}"
-            )
+
+            if name in booked_map:
+                Tooltip(
+                    frame,
+                    f"{name}\nPrenotata da: {booked_map[name]}\nGiorno: {self.date.get_date()}"
+                )
+            else:
+                Tooltip(
+                    frame,
+                    f"{name}\nLibera\nGiorno: {self.date.get_date()}"
+                )
 
             self.desk_positions[name] = (cx, cy)
 
     # ---------------------------------------------------------
-    # ZOOM MINI‑MAPPA
+    # ZOOM
     # ---------------------------------------------------------
     def on_zoom(self, event):
         if event.delta > 0:
             self.zoom_factor = min(2.5, self.zoom_factor + 0.1)
         else:
             self.zoom_factor = max(0.5, self.zoom_factor - 0.1)
-        dates = self._get_dates_for_filter()
-        booked_names = set()
-        for d in dates:
-            for _, name in get_booked_desks(d):
-                booked_names.add(name)
-        self.draw_minimap(booked_names)
+        self.load()
 
     # ---------------------------------------------------------
-    # CLICK SU MINI‑MAPPA → SELEZIONA SCRIVANIA
+    # CLICK SU MINI‑MAPPA
     # ---------------------------------------------------------
     def on_canvas_click(self, event):
         if not self.desk_positions:
@@ -413,7 +409,6 @@ class BookingWindow:
         if closest_name is None:
             return
 
-        # seleziona nella listbox la riga corrispondente
         for i in range(self.listbox.size()):
             text = self.listbox.get(i)
             if f"| {closest_name} |" in text:
@@ -465,8 +460,7 @@ class BookingWindow:
             messagebox.showerror("Errore", "Scrivania non trovata nel database")
             return
 
-        ok = book_desk(self.user_id, desk_id, date_str)
-        if not ok:
+        if not book_desk(self.user_id, desk_id, date_str):
             messagebox.showerror("Errore", "Scrivania già prenotata")
             return
 
@@ -479,22 +473,12 @@ class BookingWindow:
     def cancel(self):
         sel = self.my_bookings.curselection()
         if not sel:
-            messagebox.showwarning("Attenzione", "Seleziona una prenotazione da cancellare")
             return
 
-        text = self.my_bookings.get(sel[0])
-        # formato: "YYYY-MM-DD — DeskName  (ID: X)"
-        try:
-            id_part = text.split("(ID:")[1]
-            booking_id = int(id_part.replace(")", "").strip())
-        except Exception:
-            messagebox.showerror("Errore", "Formato prenotazione non valido")
-            return
+        row = self.my_bookings.get(sel[0])
+        booking_id = int(row.split("(ID: ")[1].replace(")", ""))
 
-        cancel_booking(
-            booking_id=booking_id,
-            is_superuser=(self.role == "superuser")
-        )
+        cancel_booking(booking_id, is_superuser=(self.role == "admin"))
 
         self.load()
         self.load_my_bookings()

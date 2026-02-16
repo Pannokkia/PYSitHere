@@ -1,73 +1,232 @@
 {
-  "offices": [
-    {
-      "id": "HQ-MI",
-      "name": "Sede Centrale MI",
-      "floors": [
+    "offices": [
         {
-          "name": "Piano Terra",
-          "total_seats": 30,
-          "desks": [
-            { "name": "M-PT-Desk A1", "x": 50,  "y": 50  },
-            { "name": "M-PT-Desk A2", "x": 150, "y": 50  },
-            { "name": "M-PT-Desk A3", "x": 250, "y": 50  },
-            { "name": "M-PT-Desk B1", "x": 50,  "y": 150 },
-            { "name": "M-PT-Desk B2", "x": 150, "y": 150 },
-            { "name": "M-PT-Desk B3", "x": 250, "y": 150 },
-            { "name": "M-PT-Desk PROVA", "x": 250, "y": 150 }
-          ]
+            "id": "HQ-MI",
+            "name": "Sede Centrale MI",
+            "floors": [
+                {
+                    "name": "Piano Terra",
+                    "total_seats": 30,
+                    "desks": [
+                        {
+                            "name": "M-PT-Desk A1",
+                            "x": 50,
+                            "y": 50
+                        },
+                        {
+                            "name": "M-PT-Desk A2",
+                            "x": 150,
+                            "y": 50
+                        },
+                        {
+                            "name": "M-PT-Desk A3",
+                            "x": 416,
+                            "y": 153
+                        },
+                        {
+                            "name": "M-PT-Desk B1",
+                            "x": 50,
+                            "y": 150
+                        },
+                        {
+                            "name": "M-PT-Desk B2",
+                            "x": 150,
+                            "y": 150
+                        },
+                        {
+                            "name": "M-PT-Desk B3",
+                            "x": 250,
+                            "y": 150
+                        },
+                        {
+                            "name": "M-PT-Desk PROVA",
+                            "x": 251,
+                            "y": 254
+                        },
+                        {
+                            "name": "M-PT-Desk PROVA33",
+                            "x": 413,
+                            "y": 254
+                        }
+                    ]
+                },
+                {
+                    "name": "Primo Piano",
+                    "total_seats": 20,
+                    "desks": [
+                        {
+                            "name": "M-1P-Desk C1",
+                            "x": 60,
+                            "y": 60
+                        },
+                        {
+                            "name": "M-1P-Desk C2",
+                            "x": 160,
+                            "y": 60
+                        },
+                        {
+                            "name": "M-1P-Desk C3",
+                            "x": 260,
+                            "y": 60
+                        },
+                        {
+                            "name": "M-1P-Desk D1",
+                            "x": 60,
+                            "y": 160
+                        },
+                        {
+                            "name": "M-1P-Desk D2",
+                            "x": 160,
+                            "y": 160
+                        },
+                        {
+                            "name": "M-1P-Desk D3",
+                            "x": 260,
+                            "y": 160
+                        }
+                    ]
+                },
+                {
+                    "name": "Secondo Piano",
+                    "total_seats": 20,
+                    "desks": [
+                        {
+                            "name": "M-1P-Desk T1",
+                            "x": 60,
+                            "y": 60
+                        },
+                        {
+                            "name": "M-1P-Desk T2",
+                            "x": 160,
+                            "y": 60
+                        },
+                        {
+                            "name": "M-1P-Desk T3",
+                            "x": 260,
+                            "y": 60
+                        },
+                        {
+                            "name": "M-1P-Desk E1",
+                            "x": 60,
+                            "y": 160
+                        },
+                        {
+                            "name": "M-1P-Desk E2",
+                            "x": 160,
+                            "y": 160
+                        },
+                        {
+                            "name": "M-1P-Desk E3",
+                            "x": 260,
+                            "y": 160
+                        }
+                    ]
+                }
+            ],
+            "appearance": {
+                "theme": "dark",
+                "desk_free_color": "white",
+                "desk_booked_color": "#1f6aa5",
+                "background_color": "#1a1a1a"
+            },
+            "desk_settings": {
+                "width": 100,
+                "height": 60
+            }
         },
         {
-          "name": "Primo Piano",
-          "total_seats": 20,
-          "desks": [
-            { "name": "M-1P-Desk C1", "x": 60,  "y": 60  },
-            { "name": "M-1P-Desk C2", "x": 160, "y": 60  },
-            { "name": "M-1P-Desk C3", "x": 260, "y": 60  },
-            { "name": "M-1P-Desk D1", "x": 60,  "y": 160 },
-            { "name": "M-1P-Desk D2", "x": 160, "y": 160 },
-            { "name": "M-1P-Desk D3", "x": 260, "y": 160 }
-          ]
-        }
-      ],
-      "appearance": {
-        "theme": "dark",
-        "desk_free_color": "white",
-        "desk_booked_color": "#1f6aa5",
-        "background_color": "#1a1a1a"
-      },
-      "desk_settings": {
-        "width": 100,
-        "height": 60
-      }
-    },
-    {
-      "id": "HQ-RM",
-      "name": "Sede RM",
-      "floors": [
+            "id": "HQ-RM",
+            "name": "Sede RM",
+            "floors": [
+                {
+                    "name": "Open Space",
+                    "total_seats": 24,
+                    "desks": [
+                        {
+                            "name": "R-OS-Desk A1",
+                            "x": 50,
+                            "y": 50
+                        },
+                        {
+                            "name": "R-OS-Desk A2",
+                            "x": 150,
+                            "y": 50
+                        },
+                        {
+                            "name": "R-OS-Desk A3",
+                            "x": 250,
+                            "y": 50
+                        },
+                        {
+                            "name": "R-OS-Desk B1",
+                            "x": 50,
+                            "y": 150
+                        },
+                        {
+                            "name": "R-OS-Desk B2",
+                            "x": 150,
+                            "y": 150
+                        },
+                        {
+                            "name": "R-OS-Desk B3",
+                            "x": 250,
+                            "y": 150
+                        }
+                    ]
+                }
+            ],
+            "appearance": {
+                "theme": "light",
+                "desk_free_color": "#f0f0f0",
+                "desk_booked_color": "#ff8800",
+                "background_color": "#ffffff"
+            },
+            "desk_settings": {
+                "width": 90,
+                "height": 55
+            }
+        },
         {
-          "name": "Open Space",
-          "total_seats": 24,
-          "desks": [
-            { "name": "R-OS-Desk A1", "x": 50,  "y": 50  },
-            { "name": "R-OS-Desk A2", "x": 150, "y": 50  },
-            { "name": "R-OS-Desk A3", "x": 250, "y": 50  },
-            { "name": "R-OS-Desk B1", "x": 50,  "y": 150 },
-            { "name": "R-OS-Desk B2", "x": 150, "y": 150 },
-            { "name": "R-OS-Desk B3", "x": 250, "y": 150 }
-          ]
+            "id": "HQ-TO",
+            "name": "HQ-TO -- Sede TO",
+            "floors": [
+                {
+                    "name": "Piano terra",
+                    "desks": [
+                        {
+                            "name": "1T-01",
+                            "x": 100,
+                            "y": 100
+                        },
+                        {
+                            "name": "1T-02",
+                            "x": 100,
+                            "y": 100
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "VE",
+            "name": "HQ-VE",
+            "floors": [
+                {
+                    "name": "Secondo piano",
+                    "desks": [
+                        {
+                            "name": "2-VE-01",
+                            "x": 160,
+                            "y": 100
+                        },
+                        {
+                            "name": "2-VE-02",
+                            "x": 100,
+                            "y": 100
+                        }
+                    ]
+                }
+            ]
         }
-      ],
-      "appearance": {
-        "theme": "light",
-        "desk_free_color": "#f0f0f0",
-        "desk_booked_color": "#ff8800",
-        "background_color": "#ffffff"
-      },
-      "desk_settings": {
-        "width": 90,
-        "height": 55
-      }
-    }
-  ]
+    ]
 }
