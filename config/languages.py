@@ -1,12 +1,14 @@
 LANG ={
 "it":{
+    "title":" PYSitHere",
     "title_main_win":"Desk Booking System - PYSitHere 0.0.1",
     "label_login_window":"Login",
     "label_subtitle_login_win":"Accedi al tuo spazio di lavoro",
     "label_username":"Username:",
     "label_password":"Password:",
     "button_login":"Accedi",
-    "msg_invalid_credentials":"Credenziali non valide",
+    "msg_invalid_username":"Username non valido",
+    "msg_invalid_password":"Password non valida",
     "msg_blocked_user":"Utente bloccato",
     "mnu_file": "File",
     "sub_mnu_file_exit":"Esci",

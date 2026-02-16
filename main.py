@@ -7,7 +7,7 @@ from logic.logic import get_user_by_username
 from gui.booking_gui import BookingWindow
 from gui.office_admin_gui import OfficeAdminWindow
 from gui.user_admin_gui import UserAdminWindow
-
+from config.languages import LANG
 from config.config_loader import get_offices
 
 
@@ -18,29 +18,31 @@ class LoginWindow:
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("blue")
 
+        self.current_lang = "it"  # PReferrd language
+
         self.win = ctk.CTk()
-        self.win.title("PYSitHere — Login")
+        self.win.title(LANG[self.current_lang]["title_main_win"])
 
         self.win.geometry("500x400")
         self.win.configure(fg_color="#222831")
 
         title = ctk.CTkLabel(
             self.win,
-            text="PYSitHere",
+            text=LANG[self.current_lang]["title"],
             font=("Helvetica", 32, "bold"),
             text_color="#00ADB5"
         )
         title.pack(pady=30)
 
-        self.username = ctk.CTkEntry(self.win, placeholder_text="Username", width=250)
+        self.username = ctk.CTkEntry(self.win, placeholder_text=LANG[self.current_lang]["label_username"], width=250)
         self.username.pack(pady=10)
 
-        self.password = ctk.CTkEntry(self.win, placeholder_text="Password", show="*", width=250)
+        self.password = ctk.CTkEntry(self.win, placeholder_text=LANG[self.current_lang]["label_password"], show="*", width=250)
         self.password.pack(pady=10)
 
         ctk.CTkButton(
             self.win,
-            text="Accedi",
+            text=LANG[self.current_lang]["button_login"],
             fg_color="#00ADB5",
             hover_color="#0097A7",
             text_color="black",
@@ -60,17 +62,17 @@ class LoginWindow:
 
         user = get_user_by_username(username)
         if not user:
-            messagebox.showerror("Errore", "Utente non trovato")
+            messagebox.showerror(LANG[self.current_lang]["msg_invalid_username"])
             return
 
         user_id, uname, pwd, role, is_blocked = user
 
         if is_blocked:
-            messagebox.showerror("Accesso negato", "Il tuo account è bloccato")
+            messagebox.showerror(LANG[self.current_lang]["msg_blocked_user"])
             return
 
         if pwd != password:
-            messagebox.showerror("Errore", "Password errata")
+            messagebox.showerror(LANG[self.current_lang]["msg_invalid_password"])
             return
 
         self.open_home(user_id, role)
@@ -85,7 +87,7 @@ class LoginWindow:
         self.win.withdraw()
 
         home = ctk.CTkToplevel()
-        home.title("PYSitHere — Home")
+        home.title(LANG[self.current_lang]["title_main_win"])
         home.geometry("600x500")
         home.configure(fg_color="#222831")
 
@@ -123,7 +125,7 @@ class LoginWindow:
             home,
             text="Benvenuto!",
             font=("Helvetica", 28, "bold"),
-            text_color="#00E676"
+            text_color="#00ADB5"
         ).pack(pady=20)
 
         # ---------------------------------------------------------
