@@ -25,7 +25,7 @@ class LoginWindow:
             self.win,
             text="PYSitHere",
             font=("Helvetica", 32, "bold"),
-            text_color="#00E676"
+            text_color="#0097A7"
         )
         title.pack(pady=30)
 
@@ -45,8 +45,12 @@ class LoginWindow:
             command=self.login
         ).pack(pady=20)
 
-        self.win.mainloop()
+        # Bind Enter/Return
+        self.win.bind("<Return>", self.login_event)
+    
 
+        self.win.mainloop()
+        
     # ---------------------------------------------------------
     # LOGIN
     # ---------------------------------------------------------
@@ -70,6 +74,11 @@ class LoginWindow:
             return
 
         self.open_home(user_id, role)
+
+
+    def login_event(self, event):
+        """Wrapper to call login() from key binding."""
+        self.login()
 
     # ---------------------------------------------------------
     # HOME
