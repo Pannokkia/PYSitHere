@@ -12,6 +12,11 @@ from config.config_loader import get_offices
 
 
 class LoginWindow:
+
+    current_lang = "it"
+    global texts
+    texts = LANG[current_lang]
+
     def __init__(self):
         init_db()  # INIZIALIZZA DB QUI
 
@@ -21,28 +26,28 @@ class LoginWindow:
         self.current_lang = "it"  # PReferrd language
 
         self.win = ctk.CTk()
-        self.win.title(LANG[self.current_lang]["title_main_win"])
+        self.win.title(texts["title_main_win"])
 
         self.win.geometry("500x400")
         self.win.configure(fg_color="#222831")
 
         title = ctk.CTkLabel(
             self.win,
-            text=LANG[self.current_lang]["title"],
+            text=texts["title"],
             font=("Helvetica", 32, "bold"),
             text_color="#00ADB5"
         )
         title.pack(pady=30)
 
-        self.username = ctk.CTkEntry(self.win, placeholder_text=LANG[self.current_lang]["label_username"], width=250)
+        self.username = ctk.CTkEntry(self.win, placeholder_text=texts["label_username"], width=250)
         self.username.pack(pady=10)
 
-        self.password = ctk.CTkEntry(self.win, placeholder_text=LANG[self.current_lang]["label_password"], show="*", width=250)
+        self.password = ctk.CTkEntry(self.win, placeholder_text=texts["label_password"], show="*", width=250)
         self.password.pack(pady=10)
 
         ctk.CTkButton(
             self.win,
-            text=LANG[self.current_lang]["button_login"],
+            text=texts["button_login"],
             fg_color="#00ADB5",
             hover_color="#0097A7",
             text_color="black",
@@ -62,17 +67,17 @@ class LoginWindow:
 
         user = get_user_by_username(username)
         if not user:
-            messagebox.showerror(LANG[self.current_lang]["msg_invalid_username"])
+            messagebox.showerror(texts["msg_invalid_username"])
             return
 
         user_id, uname, pwd, role, is_blocked = user
 
         if is_blocked:
-            messagebox.showerror(LANG[self.current_lang]["msg_blocked_user"])
+            messagebox.showerror(texts["msg_blocked_user"])
             return
 
         if pwd != password:
-            messagebox.showerror(LANG[self.current_lang]["msg_invalid_password"])
+            messagebox.showerror(texts["msg_invalid_password"])
             return
 
         self.open_home(user_id, role)
@@ -87,7 +92,7 @@ class LoginWindow:
         self.win.withdraw()
 
         home = ctk.CTkToplevel()
-        home.title(LANG[self.current_lang]["title_main_win"])
+        home.title(texts["title_main_win"])
         home.geometry("600x500")
         home.configure(fg_color="#222831")
 
@@ -98,23 +103,23 @@ class LoginWindow:
 
         # --- FILE ---
         file_menu = tk.Menu(menubar, tearoff=0)
-        file_menu.add_command(label="Esci", command=home.destroy)
-        menubar.add_cascade(label="File", menu=file_menu)
+        file_menu.add_command(label=texts["sub_mnu_file_exit"], command=home.destroy)
+        menubar.add_cascade(label=texts["mnu_file"], menu=file_menu)
 
         # --- STRUMENTI ---
         tools_menu = tk.Menu(menubar, tearoff=0)
 
         if role and role.lower() in ("admin", "superuser", "administrator", "super"):
             tools_menu.add_command(
-                label="Gestione Uffici",
+                label=texts["manage_office"],
                 command=lambda: OfficeAdminWindow(home)
             )
             tools_menu.add_command(
-                label="Gestione Utenti",
+                label=texts["manage_users"],
                 command=lambda: UserAdminWindow(home)
             )
 
-        menubar.add_cascade(label="Strumenti", menu=tools_menu)
+        menubar.add_cascade(label=texts["mnu_admin_tools"], menu=tools_menu)
 
         home.configure(menu=menubar)
 
@@ -123,7 +128,7 @@ class LoginWindow:
         # ---------------------------------------------------------
         ctk.CTkLabel(
             home,
-            text="Benvenuto!",
+            text=texts["welcome_message"] + self.username.get(),
             font=("Helvetica", 28, "bold"),
             text_color="#00ADB5"
         ).pack(pady=20)
@@ -136,7 +141,7 @@ class LoginWindow:
         if not offices:
             ctk.CTkLabel(
                 home,
-                text="⚠ Nessun ufficio configurato.\nVai in Strumenti → Gestione Uffici",
+                text=texts["error_no_offices"],
                 font=("Helvetica", 18),
                 text_color="#FF5252"
             ).pack(pady=20)
@@ -144,7 +149,7 @@ class LoginWindow:
 
         ctk.CTkLabel(
             home,
-            text="Seleziona un ufficio:",
+            text=texts["label_select_office"],
             font=("Helvetica", 18),
             text_color="#EEEEEE"
         ).pack(pady=10)
@@ -168,7 +173,7 @@ class LoginWindow:
         # ---------------------------------------------------------
         ctk.CTkLabel(
             home,
-            text="Seleziona un piano:",
+            text=texts["label_select_floor"],
             font=("Helvetica", 18),
             text_color="#EEEEEE"
         ).pack(pady=10)
@@ -201,7 +206,7 @@ class LoginWindow:
         # ---------------------------------------------------------
         ctk.CTkButton(
             home,
-            text="Apri Prenotazioni",
+            text=texts["open_booking"],
             fg_color="#00ADB5",
             hover_color="#00ADB5",
             text_color="black",

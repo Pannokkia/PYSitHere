@@ -12,11 +12,13 @@ from config.config_loader import get_offices, get_office_by_name
 from database.database import init_db   
 from config.languages import LANG
 
-current_lang = "it"
-texts = LANG[current_lang]
+
 
 class MainWindow:
     
+    current_lang = "it"
+    global texts
+    texts = LANG[current_lang]
 
     def __init__(self, root):
         self.root = root
@@ -162,7 +164,7 @@ class MainWindow:
         office_row = ctk.CTkFrame(main_frame, corner_radius=15)
         office_row.pack(pady=10)
 
-        ctk.CTkLabel(office_row, text="Ufficio:",
+        ctk.CTkLabel(office_row, text=texts["label_office"],
                      font=("Helvetica", 18)).pack(side="left", padx=10)
 
         ctk.CTkOptionMenu(
@@ -191,14 +193,14 @@ class MainWindow:
 
         welcome = ctk.CTkLabel(
             main_frame,
-            text=f"Benvenuto, ruolo: {self.role}",
+            text=texts["welcome_message"] ,
             font=("Helvetica", 34, "bold")
         )
         welcome.pack(pady=40)
 
         ctk.CTkButton(
             main_frame,
-            text="Apri Prenotazioni",
+            text=texts["open_booking"],
             font=("Helvetica", 22),
             height=60,
             width=300,

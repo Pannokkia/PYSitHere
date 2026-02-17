@@ -15,7 +15,16 @@ LANG ={
     "mnu_admin_tools": "Strumenti",
     "sub_mnu_admin_manage_users":"Gestione utenti",
     "sub_mnu_admin_manage_desk":"Gestione scrivanie",
-    "sub_mnu_admin_manage_office":"Gestione uffici"
+    "sub_mnu_admin_manage_office":"Gestione uffici",
+    "label_office":"Uffici:",
+    "welcome_message":"Benvenuto, ",
+    "open_booking":"Apri Prenotazioni",
+    "label_select_office":"Seleziona ufficio:",
+    "label_select_floor":"Seleziona piano:",
+    "open_booking":"Apri prenotazioni",
+    "error_no_offices":"⚠ Nessun ufficio configurato.\nVai in Strumenti → Gestione Uffici",
+    "manage_office":"Gestione Uffici",
+    "manage_users":"Gestione Utenti"
 
     },
 "en": {
